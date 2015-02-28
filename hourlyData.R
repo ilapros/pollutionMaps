@@ -5,6 +5,9 @@ library(reshape2)
 library(dplyr)
 library(ggplot2)
 library(rvest)
+library("sp")
+library("rgdal")
+
 ffA <- html("http://uk-air.defra.gov.uk/data/toeea/nrt/")
 anodes<-ffA %>% html_nodes("a") %>% html_text() 
 
@@ -16,10 +19,6 @@ plot(lastMeas[,c("Longitude","Latitude")])
 whichCol <- 8 + min(which(colMeans(lastMeas[,10:33]) == -111))
 
 plot(lastMeas[,c("Longitude","Latitude")], col= ifelse(lastMeas$type == "background",2,1))
-
-
-library("sp")
-library("rgdal")
 
 stSpat <- SpatialPoints(lastMeas[,c("Longitude","Latitude")])
 stSpat_df <- SpatialPointsDataFrame(stSpat, data=data.frame(name=lastMeas$name))
